@@ -4,6 +4,7 @@ var fs = require('fs'),
   utf8 = require('to-utf-8'),
   path = require('path'),
   config = require('fgh.config'),
+  now = require('moment'),
   logger = require('./utils/logger'),
   byline = require('byline');
 
@@ -77,15 +78,19 @@ function processFiles(arrayFiles) {
 
 function readerDoc(pathFile, cb) {
 
-  var stream = fs.createReadStream(pathFile).pipe(utf8());
-
-  var campos = Object.keys(campos);
+  var stream = fs.createReadStream(pathFile).pipe(utf8()),
+    filename = path.basename(pathFile).split('-'),
+    campos = Object.keys(APP_CAMPOS);
 
   stream = byline.createStream(stream);
 
   stream.on('error', cb);
 
+  filename = filename[0] + '-' + '1' + '-' + now().format('DDMMYYYY') + '-' + filename[3] + '-' + filename[4] + '-' + filename[5];
+
   stream.on('data', function(line) {
+
+    var l = '';
 
     line = line.toString().split(';');
 
@@ -104,9 +109,20 @@ function readerDoc(pathFile, cb) {
 
     });
 
+    if (doc.field === 'fechaEmision') {
+      doc.value = now().format('YYYY-MM-DD');
+    }
+
+    l = l.concat(doc.nameTable, ';', doc.field, ';', doc.posDetail, ';', doc.value);
+
+    fs.appendFileSync(path.join('./files', filename), l + '\n');
+
   });
 
   stream.on('end', function() {
+
+    fs.unlinkSync(pathFile);
+    logger.info('[*]Se reemplazaron correctamente los campos');
 
   });
 
