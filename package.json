@@ -1,0 +1,27 @@
+{
+  "name": "file-generator-homologation",
+  "version": "1.0.0",
+  "description": "Generador de archivos para la homologacion (Facturaction Eletronica).",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ov3rflow/file-generator-homologation.git"
+  },
+  "author": "Jean Alessi Reynoso",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ov3rflow/file-generator-homologation/issues"
+  },
+  "homepage": "https://github.com/ov3rflow/file-generator-homologation#readme",
+  "dependencies": {
+    "byline": "4.2.1",
+    "fgh.config": "file:config",
+    "nconf": "0.8.2",
+    "to-utf-8": "1.1.0",
+    "winston": "1.1.1"
+  }
+}

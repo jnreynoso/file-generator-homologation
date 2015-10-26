@@ -1,0 +1,7 @@
+{
+  "name": "fgh.config",
+  "version": "1.0.0",
+  "description": "App configuration manager",
+  "private": true,
+  "main": "index.js"
+}
