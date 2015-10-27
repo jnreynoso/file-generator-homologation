@@ -41,5 +41,6 @@ config/env
 .jshintrc
 .node-inspectorrc
 .npmrc
+files
 
 babel.json

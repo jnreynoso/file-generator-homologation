@@ -12,11 +12,9 @@ var MAX_CONCURRENT_FILES = config.get('app:maxConcurrentFiles'),
   APP_CAMPOS = config.get('app:campos'),
   FILES_CURRENTLY_PROCESSED = [];
 
-var arrayFiles = fs.readdirSync('./files');
+run(fs.readdirSync('./files'));
 
-processFiles(arrayFiles);
-
-function processFiles(arrayFiles) {
+function run(arrayFiles) {
   var filePath,
     currentFileName,
     currentFileSeq;
@@ -51,7 +49,7 @@ function processFiles(arrayFiles) {
       logger.info('[*]Procesando archivo:', currentFileName);
 
       (function(processedFilePath, processedFileName) {
-        readerDoc(processedFilePath, function() {
+        reader(processedFilePath, function() {
           // cuando se termine de procesar un archivo eliminarlo del arreglo
           // de archivos en procesamiento
           var index = FILES_CURRENTLY_PROCESSED.indexOf(processedFileName);
@@ -76,7 +74,7 @@ function processFiles(arrayFiles) {
   }
 }
 
-function readerDoc(pathFile, cb) {
+function reader(pathFile, cb) {
 
   var stream = fs.createReadStream(pathFile).pipe(utf8()),
     filename = path.basename(pathFile).split('-'),
@@ -90,11 +88,10 @@ function readerDoc(pathFile, cb) {
 
   stream.on('data', function(line) {
 
-    var l = '';
+    var doc = {},
+        l = '';
 
     line = line.toString().split(';');
-
-    var doc = {};
 
     doc.nameTable = line[0];
     doc.field = line[1];
@@ -115,7 +112,9 @@ function readerDoc(pathFile, cb) {
 
     l = l.concat(doc.nameTable, ';', doc.field, ';', doc.posDetail, ';', doc.value);
 
-    fs.appendFileSync(path.join('./files', filename), l + '\n');
+    console.log(l);
+
+    fs.appendFileSync(path.join('./files', filename), l + '\n', 'utf8');
 
   });
 
