@@ -112,8 +112,6 @@ function reader(pathFile, cb) {
 
     l = l.concat(doc.nameTable, ';', doc.field, ';', doc.posDetail, ';', doc.value);
 
-    console.log(l);
-
     fs.appendFileSync(path.join('./files', filename), l + '\n', 'utf8');
 
   });
